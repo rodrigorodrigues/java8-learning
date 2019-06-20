@@ -1,42 +1,24 @@
 package com.learning.java8;
 
-import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.function.Predicate;
+import java.util.function.Function;
 
-@Slf4j
 public class LambdaExpressions {
 
-    public static void main(String[] args) {
-        Lambda innerClass = new Lambda() {
-            @Override
-            public String getName() {
-                return "Inner Class";
-            }
-        };
-        innerClass.printName();
+    Function<Integer, Integer> incrementNumber = k -> k + 1;
 
-        Lambda lambda = () -> "Lambda Expressions";
-        lambda.printName();
+    Function<Integer, Integer> decrementNumber = k -> k - 1;
 
-        Predicate predicate = new Predicate<String>() {
-            @Override
-            public boolean test(String s) {
-                return s.toLowerCase().contains("lambda");
-            }
-        };
+    Function<Integer, Integer> doubleNumber = k -> k + k;
 
-        log.debug("Should be false: {}", predicate.test(innerClass.getName()));
+    Function<Integer, Integer> multiplyNumber = k -> k * k;
 
-        predicate = (Predicate<String>) s -> s.toLowerCase().contains("lambda");
-        log.debug("Should be true: {}", predicate.test(lambda.getName()));
-    }
+    Function<Integer, Integer> divideNumberBy2 = k -> k / 2;
 
-
-    @FunctionalInterface
-    interface Lambda {
+    @FunctionalInterface //This annotation is not necessary but is recommended to have and will produce a compile error when adding another method to this that interface
+    interface CustomLambda {
         Logger log = LoggerFactory.getLogger(LambdaExpressions.class);
 
         String getName();
@@ -44,5 +26,7 @@ public class LambdaExpressions {
         default void printName() {
             log.debug("Print Name: {}", getName());
         }
+
+        default void something() {} //'default' methods can have
     }
 }

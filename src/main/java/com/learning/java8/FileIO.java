@@ -1,30 +1,26 @@
 package com.learning.java8;
 
-import lombok.extern.slf4j.Slf4j;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
 
-@Slf4j
 public class FileIO {
-    public static void main(String[] args) throws IOException {
-        //Old way
-        File file = new File("src/main/resources/names.txt");
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+    public List<String> readFileJava8(File file) throws IOException {
+        return Files.readAllLines(file.toPath());
+    }
+
+    public List<String> readFileOldWay(File file) throws IOException {
+        List<String> lines = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) { //Ugly code, example bizarre of 'Decorator Pattern'
             String line;
             while ((line = reader.readLine()) != null) {
-                log.debug("old way - Line: {}", line);
+                lines.add(line);
             }
         }
-        //Old way
-
-        //New way
-        log.debug("-------------");
-        Files.lines(file.toPath())
-                .forEach(l -> log.debug("new way - Line: {}", l));
-        //New way
+        return lines;
     }
 }
